@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #FAFAFA;
+  --bg-dark: #0D0D0D;
+  --bg-card-light: #F0F0F0;
+  --gold-primary: #C9A84C;
+  --gold-light: #E8C87A;
+  --gold-dark: #9A7A2E;
+  --text-on-light: #111111;
+  --text-on-dark: #F5F0E8;
+  --text-muted: #888888;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-on-light);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  body { cursor: auto; }
+}
+
+/* ─── Hero video sharpening ──────────────────────────── */
+#hero video {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* SVG sharpening filter (aplicado via JS) */
+.sharpen-filter {
+  filter: url(#sharpen) contrast(1.08) saturate(1.15);
+}
+
+/* ─── Custom Cursor ───────────────────────────────────── */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold-primary);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0.8;
+}
+
+.cursor-ring.expanded {
+  width: 64px;
+  height: 64px;
+  border-color: var(--gold-light);
+  opacity: 1;
+}
+
+.cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-space), sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.cursor-label.visible {
+  opacity: 1;
+}
+
+/* ─── Gold Gradient Text ──────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--gold-dark) 0%,
+    var(--gold-light) 40%,
+    var(--gold-primary) 60%,
+    var(--gold-dark) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Gold Underline ──────────────────────────────────── */
+.gold-underline {
+  position: relative;
+  display: inline-block;
+}
+.gold-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
+}
+
+/* ─── Grain Texture ───────────────────────────────────── */
+.grain-texture {
+  position: relative;
+}
+.grain-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.05;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Scroll Indicator ────────────────────────────────── */
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.8; }
+  50%       { transform: scaleY(0.4); opacity: 0.3; }
+}
+.scroll-line {
+  animation: scrollPulse 2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+/* ─── Stats Counter ───────────────────────────────────── */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Card 3D Tilt ────────────────────────────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+/* ─── Testimonial Infinite Scroll ─────────────────────── */
+.testimonial-track {
+  animation: scrollLeft 35s linear infinite;
+  will-change: transform;
+}
+.testimonial-track:hover {
+  animation-play-state: paused;
+}
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── Section Reveal ──────────────────────────────────── */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* ─── Diagonal Split ──────────────────────────────────── */
+.hero-light-half {
+  clip-path: polygon(0 0, 60% 0, 50% 100%, 0 100%);
+}
+.hero-dark-half {
+  clip-path: polygon(60% 0, 100% 0, 100% 100%, 50% 100%);
+}
+
+/* ─── Form Inputs ─────────────────────────────────────── */
+.input-dark {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-on-dark);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+.input-dark:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+}
+.input-dark::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Lightbox ────────────────────────────────────────── */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Focus States ────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--gold-primary);
+  outline-offset: 3px;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
